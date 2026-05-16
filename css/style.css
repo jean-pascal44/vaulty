@@ -1,0 +1,38 @@
+/* --- STYLES PERSONNALISÉS COFFRE-FORT --- */
+
+/* Masquage strict de l'application avant déverrouillage cryptographique */
+.hidden-vault {
+    display: none !important;
+}
+
+/* Effet lumineux subtil sur l'écran d'accueil */
+.card-glow {
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.7), 0 0 50px 0px rgba(37, 99, 235, 0.03);
+}
+
+/* Animation douce à l'injection unitaire d'une ligne */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.25s ease-out forwards;
+}
+
+/* Amélioration du focus d'accessibilité sur les inputs sombres */
+input:focus {
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+/* Remplacement de la sélection par défaut pour le générateur */
+.select-all {
+    user-select: all;
+    -webkit-user-select: all;
+}

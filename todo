@@ -1,0 +1,20 @@
+- ne pas indiquer le nombre d'entrée
+- vérouiller/déverouilelr n'a pas de sens: changer le terme (ccueil, etc.)
+- voir pourquoi argon2id pas possible
+- vocabulaire enfant
+- reset de coffre ?
+- retirer "lazy loading", "Données intégralement chiffrées au repos dans le localStorage"
+- quel nombre max en localstorage ? suffisant ? passer en bdd ?
+- modifier "Identifiants chiffrés stockés", " Service / URL du Site", " Identifiant / Email", "mot de passe" ("code d'accès", "secret")
+- fonction de recherche par identifiant/service (filtrage de l'affichage)
+- ascensuer vertical pour conserver un aspect propre et ne pas défiler la page entière
+- retirer "Saisissez votre mot de passe maître pour dériver la clé cryptographique.", "Génération de mots cryptographiquement aléatoires, hautement mémorisables."
+- quand on appuie sur "révéler", modifier l'aspect du bouton
+- aligner le visuel de toutes les popins sur le visuel de l'app
+- rendre l'app plus jeune visuellement
+- remonter la force du code d'accès sous la saisie du code d'accès
+- génération pass phrase: faire comme bitwarden, lien si besoin vers bitwarden; "utiliser comme code d'accès"
+- lien vers "have i been pawned"
+- le mdp généré reste de session en session
+>- comment est géré le stockage sur des sessions différentes ?
+

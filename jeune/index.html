@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⚡ Vaulty | Mon QG Sécurisé</title>
+    <link rel="manifest" href="data:application/manifest+json,{%22name%22:%22Vaulty%22,%22short_name%22:%22Vaulty%22,%22start_url%22:%22.%22,%22display%22:%22standalone%22,%22background_color%22:%22%230b061f%22,%22theme_color%22:%22%238b5cf6%22,%22icons%22:[{%22src%22:%22https://cdn-icons-png.flaticon.com/512/3064/3064197.png%22,%22sizes%22:%22512x512%22,%22type%22:%22image/png%22}]}">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js"></script>
+    
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-[#0b061f] text-gray-100 min-h-screen font-sans antialiased selection:bg-purple-500 selection:text-white">
+
+    <div id="auth-screen" class="flex items-center justify-center min-h-screen px-4 relative overflow-hidden">
+        <div class="absolute top-1/4 left-1/4 w-72 h-72 bg-purple-600/20 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-72 h-72 bg-pink-600/15 rounded-full blur-[100px]"></div>
+
+        <div class="bg-[#140e2e]/80 backdrop-blur-xl p-8 rounded-2xl border border-purple-900/40 w-full max-w-md card-glow relative z-10">
+            <div class="text-center mb-6">
+                <span class="text-4xl">⚡</span>
+                <h1 class="text-3xl font-extrabold mt-2 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent tracking-tight">Vaulty</h1>
+                <p class="text-purple-300/70 text-sm mt-2">Le coffre-fort local qui garde tes comptes à l'abri des Hackers.</p>
+            </div>
+            
+            <form id="auth-form" onsubmit="handleAuth(event)" class="space-y-4">
+                <div>
+                    <label for="master-password" class="block text-xs font-bold text-purple-300 uppercase tracking-wider mb-2">Clé Secrète Maître</label>
+                    <input type="password" id="master-password" placeholder="Choisis un mot de passe ultra solide..." required
+                        class="w-full bg-[#070414] border border-purple-950 rounded-xl px-4 py-3.5 text-white focus:outline-none focus:border-purple-500 transition-all placeholder-gray-600 font-medium">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3.5 rounded-xl transition-all shadow-lg shadow-purple-950/50 active:scale-[0.98]">
+                    🔓 Déverrouiller mon QG
+                </button>
+            </form>
+            <p class="text-[11px] text-gray-500 text-center mt-6">Zéro serveur. Tes données restent au chaud sur ton appareil.</p>
+        </div>
+    </div>
+
+    <div id="app-screen" class="hidden-vault max-w-6xl mx-auto px-4 py-8">
+        <header class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 border-b border-purple-950/40 pb-6">
+            <div>
+                <h1 class="text-3xl font-black text-white tracking-tight flex items-center gap-2">
+                    <span class="text-purple-500 drop-shadow-[0_0_10px_rgba(168,85,247,0.5)]">🛡️</span> Mon Espace Local
+                </h1>
+                <p class="text-xs text-purple-300/60 mt-1">Chiffrement militaire actif sur ton navigateur — Personne d'autre ne peut voir.</p>
+            </div>
+            <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                <span class="bg-purple-950/40 border border-purple-800/60 text-purple-300 text-xs px-4 py-2 rounded-xl font-bold">
+                    🔑 Comptes stockés : <span id="vault-count" class="text-pink-400 font-mono text-sm">0</span>
+                </span>
+                <button onclick="lockVault()" class="bg-red-950/40 hover:bg-red-900/50 border border-red-800/50 text-red-300 px-4 py-2 rounded-xl text-xs font-bold transition-all active:scale-[0.97]">
+                    Lock 🔒
+                </button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="space-y-6 lg:col-span-1">
+                <div class="bg-[#140e2e]/60 backdrop-blur-md p-6 rounded-2xl border border-purple-950 shadow-xl">
+                    <h2 id="form-title" class="text-sm font-black text-purple-300 tracking-wider uppercase mb-4 flex items-center gap-2">
+                        <span>➕</span> Ajouter un compte
+                    </h2>
+                    <form id="entry-form" onsubmit="saveEntry(event)" class="space-y-4">
+                        <input type="hidden" id="entry-id">
+                        <div>
+                            <label class="text-[11px] text-gray-400 uppercase font-bold tracking-wider">Application / Site web</label>
+                            <input type="text" id="entry-service" required placeholder="ex: Discord, Fortnite, TikTok, Epic Games" 
+                                class="w-full bg-[#070414] border border-purple-950 rounded-xl p-3 text-sm text-white mt-1.5 focus:outline-none focus:border-purple-500 transition-colors font-medium">
+                        </div>
+                        <div>
+                            <label class="text-[11px] text-gray-400 uppercase font-bold tracking-wider">Pseudo / Email / N°</label>
+                            <input type="text" id="entry-login" required placeholder="Ton identifiant de connexion" 
+                                class="w-full bg-[#070414] border border-purple-950 rounded-xl p-3 text-sm text-white mt-1.5 focus:outline-none focus:border-purple-500 transition-colors font-medium">
+                        </div>
+                        <div>
+                            <label class="text-[11px] text-gray-400 uppercase font-bold tracking-wider">Mot de passe</label>
+                            <input type="text" id="entry-pass" required placeholder="Tape-le ou génère un master-pass juste en bas 👇" 
+                                class="w-full bg-[#070414] border border-purple-950 rounded-xl p-3 text-sm text-emerald-400 mt-1.5 focus:outline-none focus:border-purple-500 transition-colors font-mono">
+                        </div>
+                        <div class="flex gap-2 pt-2">
+                            <button type="submit" class="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-md active:scale-[0.97]">Sauvegarder</button>
+                            <button type="button" onclick="resetForm()" class="bg-gray-800/80 hover:bg-gray-700 text-gray-300 text-sm px-4 py-3 rounded-xl transition-all">Reset</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="bg-[#140e2e]/60 backdrop-blur-md p-6 rounded-2xl border border-purple-950 shadow-xl">
+                    <h2 class="text-sm font-black text-purple-300 tracking-wider uppercase mb-1 flex items-center gap-2">
+                        <span>🎲</span> Générateur de Mots Secrets
+                    </h2>
+                    <p class="text-xs text-gray-400 mb-4">Crée des passphrases ultra sécurisées, faciles à retenir mais impossibles à deviner.</p>
+                    <button onclick="generatePassphrase()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-bold py-3 rounded-xl transition-all shadow-md active:scale-[0.97]">
+                        🎲 Générer une combinaison
+                    </button>
+                    
+                    <div id="gen-result-container" class="hidden mt-4 space-y-3">
+                        <div class="bg-[#070414] p-3.5 rounded-xl border border-emerald-950 font-mono text-emerald-400 break-all select-all text-sm tracking-wide text-center font-bold" id="gen-result"></div>
+                        <div class="text-xs bg-[#070414] p-3 rounded-xl border border-purple-950/40 space-y-2">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-400 font-medium">Niveau du mot de passe :</span>
+                                <strong id="pass-strength-text" class="uppercase text-xs tracking-wider font-black">-</strong>
+                            </div>
+                            <div class="w-full bg-gray-900 h-2.5 rounded-full overflow-hidden p-[2px]">
+                                <div id="pass-strength-bar" class="h-full w-0 rounded-full transition-all duration-300"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-[#140e2e]/40 backdrop-blur-md p-6 rounded-2xl border border-purple-950 shadow-xl self-start">
+                <div class="flex justify-between items-center mb-5">
+                    <h2 class="text-sm font-black text-purple-300 tracking-wider uppercase flex items-center gap-2">
+                        <span>📂</span> Tes Coffres Sécurisés
+                    </h2>
+                    <span class="text-[10px] text-purple-300 bg-purple-950/60 border border-purple-800 px-2.5 py-1 rounded-lg font-bold uppercase tracking-wider">Sécurisé Local</span>
+                </div>
+                <div id="vault-list" class="space-y-3">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/js.script"></script>
+</body>
+</html>
